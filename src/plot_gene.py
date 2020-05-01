@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 def plot_mutation_frequency(site_list, gene_size, density=True, gene_name='', mutation_type=''):
     """To plot the mutation frequency of a gene
@@ -21,3 +22,15 @@ def plot_mutation_frequency(site_list, gene_size, density=True, gene_name='', mu
     plt.xlabel('Amino Acid Position')
     plt.ylabel('Cumulative frequency')
 
+def plot_cancer_type_freq(cancer, gene_name='', mutation_type=''):
+    """Plot the mutation frequency by cancer type
+
+    Args:
+        cancer (pandas series): perform a value_counts on the pandas df on cancer type
+        gene_name (string, optional): Name of the gene. Defaults to ''.
+        mutation_type (string, optional): Type of mutation. Defaults to ''.
+    """
+    cancer.plot.bar()
+    plt.title(f'{gene_name} {mutation_type} Mutation Frequency')
+    plt.xlabel('Types of Cancer')
+    plt.ylabel('Frequency of mutation')
