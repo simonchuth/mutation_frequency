@@ -30,6 +30,7 @@ def plot_cancer_type_freq(cancer, gene_name='', mutation_type=''):
         gene_name (string, optional): Name of the gene. Defaults to ''.
         mutation_type (string, optional): Type of mutation. Defaults to ''.
     """
+    plt.figure(figsize=(15,10)) 
     cancer.plot.bar()
     plt.title(f'{gene_name} {mutation_type} Mutation Frequency')
     plt.xlabel('Types of Cancer')
