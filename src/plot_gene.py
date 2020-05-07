@@ -35,3 +35,45 @@ def plot_cancer_type_freq(cancer, gene_name='', mutation_type=''):
     plt.title(f'{gene_name} {mutation_type} Mutation Frequency')
     plt.xlabel('Types of Cancer')
     plt.ylabel('Frequency of mutation')
+    plt.tight_layout()
+
+class Plot_site:
+    def __init__(self):
+        self.site_dict = {'Brain': [1150, 300],
+                          'Breast': [3800, 2300],
+                          'Liver': [1000, 2700],
+                          'Cervix': [3400, 4250],
+                          'Lung': [800, 2000],
+                          'Uterus': [3400, 4000]}
+
+    def get_site_dict(self):
+        return self.site_dict
+
+    def update_site_dict(self,site_dict):
+        self.site_dict = site_dict
+
+    def map_site(self, df):
+        if 'site' not in df.columns:
+            print("Error! There is no column 'site'. Please ensure the \
+                  dataframe contains 'site' and 'frequency'")
+        df['coordinate'] = df['site'].map(self.site_dict)
+        return df
+
+    def plot_site(self, df, img_path, size=2000, cmap=plt.cm.PiYG, figsize=(15,10)):
+        if 'coordinate' not in df.columns:
+            df = self.map_site(df)
+
+        c_scale = 1/df.frequency.max()
+        img = plt.imread(img_path)
+
+        plt.figure(figsize=figsize)
+        plt.imshow(img)
+        for index, row in df.iterrows():
+            plt.scatter(row['coordinate'][0], row['coordinate'][1], c=cmap(np.array(row['frequency']*c_scale).reshape(1,)), s=row['frequency']*size)
+            plt.text(row['coordinate'][0]+200, row['coordinate'][1]+50, row['site'], fontsize=15, backgroundcolor='black', color='white')
+            plt.text(row['coordinate'][0]-100, row['coordinate'][1]+50,f'{round(row.frequency*100)}%', fontweight=800)
+        plt.tick_params(
+            bottom=False,              
+            left=False,
+            labelleft=False,
+            labelbottom=False) 
