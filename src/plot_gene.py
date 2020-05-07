@@ -24,6 +24,9 @@ def plot_mutation_frequency(site_list, gene_size, density=True, gene_name='', mu
 
 def plot_cancer_type_freq(cancer, gene_name='', mutation_type=''):
     """Plot the mutation frequency by cancer type
+    Please download the stock image from the following URL before 
+    using this class.
+    https://www.freepik.com/free-vector/human-anatomy-model-with-different-systems_4805791.htm
 
     Args:
         cancer (pandas series): perform a value_counts on the pandas df on cancer type
@@ -38,6 +41,9 @@ def plot_cancer_type_freq(cancer, gene_name='', mutation_type=''):
     plt.tight_layout()
 
 class Plot_site:
+    """To plot the sites of cancer and frequency of 
+       incidence (mutation/amplification..etc)
+    """
     def __init__(self):
         self.site_dict = {'Brain': [1150, 300],
                           'Breast': [3800, 2300],
@@ -47,12 +53,33 @@ class Plot_site:
                           'Uterus': [3400, 4000]}
 
     def get_site_dict(self):
+        """Get the site_dict from class
+
+        Returns:
+            site_dict: dictionary of site name, and the coordinate
+        """
         return self.site_dict
 
     def update_site_dict(self,site_dict):
+        """Update the site_dict
+
+        Args:
+            site_dict (dict): dictionary with keys as site name, and 
+                              value and coordinates
+        """
         self.site_dict = site_dict
 
     def map_site(self, df):
+        """Map the site in df to coordinates in picture
+
+        Args:
+            df (pandas df): df of at least two columns
+                            -site: primary site of cancer
+                            -frequency: frequency of incidence 
+                                        (mutation/amplification..etc)
+        Returns:
+            df (pandas df): df with an additional column 'coordinate'
+        """
         if 'site' not in df.columns:
             print("Error! There is no column 'site'. Please ensure the \
                   dataframe contains 'site' and 'frequency'")
@@ -60,6 +87,21 @@ class Plot_site:
         return df
 
     def plot_site(self, df, img_path, size=2000, cmap=plt.cm.PiYG, figsize=(15,10)):
+        """Plot a scatter plot on top of the stock image
+
+        Args:
+            df (pandas df): df of at least three columns
+                            -site: primary site of cancer
+                            -frequency: frequency of incidence 
+                                        (mutation/amplification..etc)
+                            -coordinate: coordinate of site on stock image
+            img_path (string): datapath to the stock image
+                               *Please download the stock image from 
+                               https://www.freepik.com/free-vector/human-anatomy-model-with-different-systems_4805791.htm
+            size (int, optional): size of the scatterplot points. Defaults to 2000.
+            cmap (plt.cm maps, optional): plt.cm colour map. Defaults to plt.cm.PiYG.
+            figsize (tuple, optional): size of figure. Defaults to (15,10).
+        """
         if 'coordinate' not in df.columns:
             df = self.map_site(df)
 
